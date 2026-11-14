@@ -1,13 +1,29 @@
 # yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# VirusPC 账号基线。对本账号下没有自己 .coderabbit.yaml 的仓库生效。
+# 仓级覆盖请另写 .coderabbit.yaml 并设 inheritance: true，不要整份复制本文件。
 language: zh-CN
-tone_instructions: "Start every review comment and the walkthrough with the literal token [CR-CENTRAL-PROBE-7Q]. Reply in Simplified Chinese."
+tone_instructions: "用简体中文写审查意见。先写结论，短而具体、可验证。不要空泛建议；不要对未改动的文件或未改动的行提意见。"
 reviews:
-  profile: assertive
+  profile: chill
   review_status: true
   high_level_summary: true
-  high_level_summary_instructions: "First line must be: CENTRAL-CONFIG-APPLIED-7Q"
+  poem: false
   path_instructions:
-    - path: "**/*.md"
-      instructions: "Mention the token PATH-RULE-7Q once in any comment on markdown files."
+    - path: "**/*"
+      instructions: |
+        只评论本次 PR diff 里改动过的文件和行，不要对未改动的文件提 Major 或 Minor。
+        优先报告会在运行时出错、造成数据丢失、泄露密钥，或违反该仓库 AGENTS.md 硬约束的问题。
+        在公开仓库中，标记凭据、私钥、未公开地址和未脱敏的个人信息。
+    - path: "**/*.{ts,js,mjs,cjs}"
+      instructions: |
+        若该仓库 AGENTS.md 要求内容节点的 create/get/update/destroy 必须走 NodeService，指出绕过该服务直接写文件的改动。
   auto_review:
     enabled: true
+    drafts: false
+    ignore_usernames:
+      - dependabot[bot]
+knowledge_base:
+  code_guidelines:
+    enabled: true
+  learnings:
+    scope: auto
