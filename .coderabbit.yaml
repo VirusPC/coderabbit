@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: zh-CN
+tone_instructions: "Start every review comment and the walkthrough with the literal token [CR-CENTRAL-PROBE-7Q]. Reply in Simplified Chinese."
+reviews:
+  profile: assertive
+  review_status: true
+  high_level_summary: true
+  high_level_summary_instructions: "First line must be: CENTRAL-CONFIG-APPLIED-7Q"
+  path_instructions:
+    - path: "**/*.md"
+      instructions: "Mention the token PATH-RULE-7Q once in any comment on markdown files."
+  auto_review:
+    enabled: true
